@@ -1,6 +1,14 @@
 import {describe,it,expect} from 'vitest';
-import {num,joinDeviceValues,timelineWindows,viennaTime,FIXED_TARIFF_TEXT} from './live-energy';
+import {num,joinDeviceValues,timelineWindows,viennaTime,householdSolarGeneration} from './live-energy';
 describe('External energy data',()=>{
+ it('integrates household solar power across quarter-hour slots without counting community purchases',()=>{
+  expect(householdSolarGeneration([{solar_kw:4,bought_from_neighbours_kwh:10},{solar_kw:2}])).toBe(1.5);
+ });
+ it('does not present missing solar generation as zero',()=>{
+  expect(householdSolarGeneration([{solar_kw:null}])).toBeNull();
+  expect(householdSolarGeneration([])).toBeNull();
+  expect(householdSolarGeneration([{solar_kw:0}])).toBe(0);
+ });
  it('converts string numeric columns',()=>expect(num({energy_kwh:'21.60'},'energy_kwh')).toBe(21.6));
  it('joins device market values by both run and device',()=>expect(joinDeviceValues([{run_id:'summer',device_id:'ev'}],[{run_id:'winter',device_id:'ev',avg_market_price_ct:20},{run_id:'summer',device_id:'ev',avg_market_price_ct:8}])[0]?.['avg_market_price_ct']).toBe(8));
  it('displays timestamps in Vienna summer time',()=>expect(viennaTime('2026-06-21T09:00:00Z')).toBe('11:00'));
