@@ -1,6 +1,5 @@
 export const german: Record<string, string> = {
-  "Demo case:": "Demo-Fall:",
-  "Two sample days for demonstration only": "Zwei Beispieltage nur zur Demonstration",
+  "Demonstration Scenario": "Demonstrationsszenario",
   "Sample breakdown · illustrative data": "Beispielaufschlüsselung · illustrative Daten",
   "When the community surplus happens and how it is split": "Wann der Überschuss entsteht und wie er verteilt wird",
   "Each hour's surplus is split evenly between all {count} members.": "Der Überschuss jeder Stunde wird gleichmäßig auf alle {count} Mitglieder verteilt.",
