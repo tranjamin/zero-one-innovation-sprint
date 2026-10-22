@@ -20,7 +20,7 @@ function EnergyFlow() {
   const [playing, setPlaying] = useState(true);
   useEffect(() => {
     if (!playing) return;
-    const t = setInterval(() => setHour((h) => (h + 0.1) % 24), 60);
+    const t = setInterval(() => setHour((h) => (h + 1) % 24), 1200);
     return () => clearInterval(t);
   }, [playing]);
   const m = mix(hour);
@@ -36,8 +36,8 @@ function EnergyFlow() {
     <g>
       <path d={d} fill="none" className="stroke-border" strokeWidth="3" />
       {on && share > 0.02 && (
-        <path d={d} fill="none" className={cls} strokeWidth={1.5 + share * 3} strokeDasharray="3 7"
-          style={{ strokeDashoffset: -hour * 150 }} opacity={0.4 + share * 0.6} />
+        <path d={d} fill="none" className={`${cls} animate-pulse`} strokeWidth={1.5 + share * 3}
+          style={{ animationDuration: "2.4s" }} opacity={0.45 + share * 0.5} />
       )}
     </g>
   );
@@ -66,7 +66,7 @@ function EnergyFlow() {
         {label(28, 150, "Power plant")}
         {/* Regional wind farm: rotors seen from above */}
         {([[288, 108], [300, 130], [280, 134]] as [number, number][]).map(([x, y], k) => (
-          <g key={k} style={{ transformOrigin: `${x}px ${y}px`, transform: `rotate(${hour * 400 * (0.4 + m.regional)}deg)` }}>
+          <g key={k} style={{ transformOrigin: `${x}px ${y}px`, transform: `rotate(${hour * 30}deg)` }}>
             <line x1={x - 7} y1={y} x2={x + 7} y2={y} className="stroke-info" strokeWidth="2" />
             <circle cx={x} cy={y} r="1.8" className="fill-foreground" />
           </g>
@@ -120,7 +120,7 @@ function EnergyFlow() {
       </div>
       <div className="flex items-center gap-3">
         <Button size="sm" variant="outline" onClick={() => setPlaying((p) => !p)}>{playing ? "Pause" : "Play"}</Button>
-        <input type="range" min={0} max={23.9} step={0.1} value={hour} aria-label="Time of day"
+        <input type="range" min={0} max={23} step={1} value={hour} aria-label="Time of day"
           onChange={(e) => { setPlaying(false); setHour(Number(e.target.value)); }} className="flex-1 accent-primary" />
       </div>
       <p className="text-xs text-muted-foreground">Illustrative: the EV and boiler charge overnight on regional wind and at midday on neighbours' solar, and pause during the evening power-plant peak.</p>
