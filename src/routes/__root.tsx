@@ -11,6 +11,9 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import { EnergyProvider } from "@/components/energy/energy-provider";
+import { LiveEnergyProvider } from '@/components/energy/live-energy-provider';
+import { DataLoading } from '@/components/energy/data-loading';
+import { householdOptions, scenarioOptions, text, type EnergyDay, type EnergyMode } from '@/lib/live-energy';
 import { AppShell } from "@/components/energy/app-shell";
 import { IntroSlideshow } from "@/components/energy/intro-slideshow";
 import { LanguageProvider, useLanguage } from '@/components/energy/language-provider';
@@ -80,6 +83,14 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  validateSearch: (search: Record<string, unknown>): {day?:EnergyDay;mode?:EnergyMode} => ({day:search['day'] === '2026-01-21' ? '2026-01-21' : '2026-06-21',mode:search['mode'] === 'flex' ? 'flex' : 'nachbarstrom'}),
+  loaderDeps: ({search}) => ({day:search.day ?? '2026-06-21' as EnergyDay,mode:search.mode ?? 'nachbarstrom' as EnergyMode}),
+  loader: async ({context,deps}) => {
+    const household = await context.queryClient.ensureQueryData(householdOptions());
+    await context.queryClient.ensureQueryData(scenarioOptions(text(household,'id'),deps.day,deps.mode));
+  },
+  pendingComponent: DataLoading,
+  pendingMs: 0,
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -131,7 +142,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <EnergyProvider><AppShell><Outlet /></AppShell><IntroSlideshow /></EnergyProvider>
+      <LiveEnergyProvider><EnergyProvider><AppShell><Outlet /></AppShell><IntroSlideshow /></EnergyProvider></LiveEnergyProvider>
     </QueryClientProvider>
   );
 }

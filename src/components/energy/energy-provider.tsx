@@ -1,8 +1,11 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 import { initialAppliances, type Appliance, type Tariff } from '@/lib/energy';
+import {useLiveEnergy} from './live-energy-provider';
+import {text} from '@/lib/live-energy';
 type EnergyContextValue = { appliances: Appliance[]; updateAppliance: (appliance: Appliance) => void; addAppliance: (kind: Appliance['kind'], name: string) => void; tariff: Tariff; setTariff: (tariff: Tariff) => void; community: boolean; setCommunity: (value: boolean) => void; notifications: boolean; setNotifications: (value: boolean) => void; redeemed: boolean; redeem: () => void };
 const EnergyContext = createContext<EnergyContextValue | null>(null);
 export function EnergyProvider({ children }: { children: ReactNode }) {
+  const live=useLiveEnergy();
   const [appliances, setAppliances] = useState(initialAppliances);
   const [tariff, setTariff] = useState<Tariff>('variable');
   const [community, setCommunity] = useState(true);
@@ -12,6 +15,6 @@ export function EnergyProvider({ children }: { children: ReactNode }) {
     const template = initialAppliances.find(a => a.kind === kind); if (!template) return;
     setAppliances(prev => [...prev, {...template, id: `device-${Date.now()}`, name, model: 'New appliance · Home'}]);
   }
-  return <EnergyContext.Provider value={{ appliances, updateAppliance: a => setAppliances(prev => prev.map(p => p.id === a.id ? a : p)), addAppliance, tariff, setTariff, community, setCommunity, notifications, setNotifications, redeemed, redeem: () => setRedeemed(true) }}>{children}</EnergyContext.Provider>;
+  return <EnergyContext.Provider value={{ appliances, updateAppliance: a => setAppliances(prev => prev.map(p => p.id === a.id ? a : p)), addAppliance, tariff: text(live.overview,'tariff')==='fixed'?'fixed':'variable', setTariff, community:live.mode==='nachbarstrom', setCommunity: value=>{void live.setMode(value?'nachbarstrom':'flex')}, notifications, setNotifications, redeemed, redeem: () => setRedeemed(true) }}>{children}</EnergyContext.Provider>;
 }
 export function useEnergy() { const value = useContext(EnergyContext); if (!value) throw new Error('Energy provider is required'); return value; }

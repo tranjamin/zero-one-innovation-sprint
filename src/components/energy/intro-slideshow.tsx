@@ -2,6 +2,8 @@ import { useLanguage } from './language-provider';
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import {Checkbox} from '@/components/ui/checkbox';
+import {shouldShowIntro,rememberIntroPreference} from '@/lib/onboarding';
 import { Zap, Clock, Users, PiggyBank, ShieldCheck, ChevronLeft, ChevronRight } from "lucide-react";
 
 /** Illustrative share of supply per hour: local (neighbours), regional (wind/hydro), plant. */
@@ -145,17 +147,19 @@ const features = [
   { icon: ShieldCheck, title: "You stay in control", text: "Set constraints like “car at 80% by 07:00” and override anytime." },
 ];
 
+let introPresented = false;
 export function IntroSlideshow() { const { t, language, setLanguage } = useLanguage(); 
   const [open, setOpen] = useState(false);
   const [i, setI] = useState(0);
-  useEffect(() => setOpen(true), []);
+  const [dontShowAgain,setDontShowAgain] = useState(false);
+  useEffect(() => {if(!introPresented){introPresented=true;setOpen(shouldShowIntro(localStorage));}}, []);
   const slides = [
     <div key="pitch" className="space-y-4 text-center">
       <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground"><Zap className="h-7 w-7" /></div>
       <h2 className="font-display text-2xl font-bold">{t("Charge smarter. Pay less. Share more.")}</h2>
       <p className="text-muted-foreground">{t("Wien Energie Smart Charging automatically runs your biggest appliances when power is cheapest and greenest — using your neighbours' solar surplus first.")}</p>
       <div className="grid grid-cols-3 gap-2 pt-2 text-sm">
-        {([["up to 30%", "lower charging costs"], ["0 effort", "set it once"], ["more local", "community energy"]] as [string, string][]).map(([a, b]) => (
+        {([["better timing", "lower charging costs"], ["0 effort", "set it once"], ["more local", "community energy"]] as [string, string][]).map(([a, b]) => (
           <div key={a} className="rounded-md bg-muted p-3"><div className="font-display font-bold text-primary">{t(a)}</div><div className="text-xs text-muted-foreground">{t(b)}</div></div>
         ))}
       </div>
@@ -185,6 +189,7 @@ export function IntroSlideshow() { const { t, language, setLanguage } = useLangu
         <DialogTitle className="sr-only">{t("Welcome to Wien Energie Smart Charging")}</DialogTitle>
         <DialogDescription className="sr-only">{t("Introduction slideshow")}</DialogDescription>
         {slides[i]}
+        <label className="flex items-center gap-2 text-sm text-muted-foreground"><Checkbox checked={dontShowAgain} onCheckedChange={checked=>{const hidden=checked===true;setDontShowAgain(hidden);rememberIntroPreference(localStorage,hidden)}}/>{t("Don't show again")}</label>
         <div className="mt-4 flex items-center justify-between">
           <Button variant="ghost" size="sm" disabled={i === 0} onClick={() => setI(i - 1)}><ChevronLeft className="h-4 w-4" />{t("Back")}</Button>
           <div className="flex gap-1.5">
