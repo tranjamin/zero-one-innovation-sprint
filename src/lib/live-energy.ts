@@ -1,7 +1,7 @@
 import { queryOptions } from '@tanstack/react-query';
 import { supabase } from './supabase';
 export type DataRow = Record<string, unknown>;
-export type EnergyDay = '2026-06-21' | '2026-01-21';
+export type EnergyDay = '2026-07-15' | '2026-01-21';
 export type EnergyMode = 'flex' | 'nachbarstrom';
 export const num = (row: DataRow, key: string) => Number(row[key] ?? 0);
 export const text = (row: DataRow, key: string) => String(row[key] ?? '');
@@ -26,7 +26,7 @@ export function timelineWindows(rows: DataRow[]) {
  return windows;
 }
 export const householdOptions = () => queryOptions({queryKey:['energy-household'],staleTime:60000,queryFn:async () => {
- const {data,error}=await supabase.from('households').select('*').eq('display_name','Benjamin').single();
+ const {data,error}=await supabase.from('households').select('*').eq('display_name','Ben').single();
  if(error) throw error; return data as DataRow;
 }});
 export const scenarioOptions = (householdId:string,day:EnergyDay,mode:EnergyMode) => queryOptions({queryKey:['energy-scenario',householdId,day,mode],staleTime:60000,queryFn:async () => {
@@ -35,7 +35,6 @@ export const scenarioOptions = (householdId:string,day:EnergyDay,mode:EnergyMode
   householdQuery('app_household_overview').single(),
   householdQuery('app_household_timeline').order('ts'),
   householdQuery('app_device_plan'),
-  supabase.from('app_community').select('*').eq('day',day).eq('mode',mode).single(),
   supabase.from('app_community_trades').select('*').eq('buyer_id',householdId).eq('day',day).eq('mode',mode).order('kwh',{ascending:false}).limit(5),
  ]);
  for(const result of results) if(result.error) throw result.error;
@@ -43,7 +42,9 @@ export const scenarioOptions = (householdId:string,day:EnergyDay,mode:EnergyMode
  const runId=text(overview,'run_id');
  const {data:values,error}=await supabase.from('app_device_market_value').select('*').eq('run_id',runId).in('device_id',plans.map(p=>text(p,'device_id')));
  if(error) throw error;
- return {overview,timeline,devices:joinDeviceValues(plans,(values ?? []) as DataRow[]),communityData:results[3]?.data as DataRow,trades:results[4]?.data as DataRow[]};
+ const community=await supabase.from('app_community').select('*').eq('run_id',runId).maybeSingle();
+ if(community.error) throw community.error;
+ return {overview,timeline,devices:joinDeviceValues(plans,(values ?? []) as DataRow[]),communityData:(community.data ?? {}) as DataRow,trades:results[3]?.data as DataRow[]};
 }});
-export const DATA_NOTE = 'Demo data: real Austrian day-ahead prices (EPEX via aWATTar) for 21 Jun and 21 Jan 2026; household profiles and solar are modelled. Assumptions: grid fee 8 ct/kWh, 40 % grid-fee discount within the community, neighbour price 7 ct/kWh (or market if higher), 1 ct/kWh platform fee.';
+export const DATA_NOTE = 'Demo data: real Austrian day-ahead prices (EPEX via aWATTar) for 15 Jul and 21 Jan 2026; household profiles and solar are modelled. Assumptions: grid fee 8 ct/kWh, 40 % grid-fee discount within the community, neighbour price 7 ct/kWh (or market if higher), 1 ct/kWh platform fee.';
 export const FIXED_TARIFF_TEXT = 'You keep your fixed price of {price} ct/kWh. Moving appliances lets Wien Energie buy cheaper energy, and you get 30 % of that saving as credits.';

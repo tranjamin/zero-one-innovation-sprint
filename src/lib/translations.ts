@@ -55,7 +55,7 @@ export const german: Record<string, string> = {
   "Community energy · first priority": "Gemeinschaftsenergie · erste Priorität",
 
   "Hi {name}": "Hallo {name}",
-  "Summer · 21 Jun": "Sommer · 21. Juni",
+  "Summer · 15 Jul": "Sommer · 15. Juli",
   "Winter · 21 Jan": "Winter · 21. Jan.",
   "Smart devices": "Intelligente Geräte",
   "Smart + neighbours": "Intelligent + Nachbarn",
@@ -115,7 +115,7 @@ export const german: Record<string, string> = {
   "better timing": "bessere Planung",
   "Fixed-price customers receive 30 % of the procurement saving as credits; the savings guarantee is included when applicable.": "Fixpreis-Kunden erhalten 30 % der Einkaufskostenersparnis als Gutschriften; eine Spargarantie ist gegebenenfalls enthalten.",
   "Switches are visual only in this read-only demo. No real appliance is controlled.": "Schalter sind in dieser Demo nur visuell. Keine echten Geräte werden gesteuert.",
-  "Demo data: real Austrian day-ahead prices (EPEX via aWATTar) for 21 Jun and 21 Jan 2026; household profiles and solar are modelled. Assumptions: grid fee 8 ct/kWh, 40 % grid-fee discount within the community, neighbour price 7 ct/kWh (or market if higher), 1 ct/kWh platform fee.": "Demodaten: echte österreichische Day-Ahead-Preise (EPEX via aWATTar) für den 21. Juni und 21. Januar 2026; Haushaltsprofile und Solarenergie sind modelliert. Annahmen: Netzgebühr 8 ct/kWh, 40 % Netzgebührenrabatt innerhalb der Gemeinschaft, Nachbarpreis 7 ct/kWh (oder Marktpreis, falls höher), Plattformgebühr 1 ct/kWh.",
+  "Demo data: real Austrian day-ahead prices (EPEX via aWATTar) for 15 Jul and 21 Jan 2026; household profiles and solar are modelled. Assumptions: grid fee 8 ct/kWh, 40 % grid-fee discount within the community, neighbour price 7 ct/kWh (or market if higher), 1 ct/kWh platform fee.": "Demodaten: echte österreichische Day-Ahead-Preise (EPEX via aWATTar) für den 21. Juni und 21. Januar 2026; Haushaltsprofile und Solarenergie sind modelliert. Annahmen: Netzgebühr 8 ct/kWh, 40 % Netzgebührenrabatt innerhalb der Gemeinschaft, Nachbarpreis 7 ct/kWh (oder Marktpreis, falls höher), Plattformgebühr 1 ct/kWh.",
 
   "Recommended usage times": "Empfohlene Nutzungszeiten",
   "Next 24 hours": "Nächste 24 Stunden",
