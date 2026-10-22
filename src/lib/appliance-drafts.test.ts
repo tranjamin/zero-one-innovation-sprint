@@ -1,0 +1,5 @@
+import {it,expect} from 'vitest';
+import {draftFromDevice,validDraft} from './appliance-drafts';
+it('prefills car constraints from connected household data',()=>{const draft=draftFromDevice({type:'ev_charger',name:'Electric vehicle',power_kw:'11',energy_kwh:'21.6',ready_by:'07:00',ready_soc:'0.6'});expect(draft.target).toBe(60);expect(draft.readyBy).toBe('07:00');expect(draft.energy).toBe(21.6)});
+it('accepts a new appliance with charging constraints',()=>expect(validDraft({type:'ev_charger',name:'Family car',model:'',location:'Garage',power:7.2,energy:16.8,readyBy:'07:00',target:60,enabled:true})).toBe(true));
+it('rejects invalid battery targets',()=>expect(validDraft({type:'ev_charger',name:'Family car',model:'',location:'',power:7.2,energy:16.8,readyBy:'07:00',target:101,enabled:true})).toBe(false));

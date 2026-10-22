@@ -13,5 +13,5 @@
 - [x] Preserve bilingual design, update data disclosures and verify all four scenarios and mobile layout.
 - [x] Highlight community-surplus priority and even community-wide allocation across tabs; distinguish the intended policy from existing read-only results.
 - [x] Add a bilingual “Don’t show again” onboarding preference and verify it survives reload.
-- [ ] Restore constraint editing and adding appliances, and polish appliance switches.
+- [x] Restore constraint editing and adding appliances as explicitly unsaved drafts, and polish appliance switches.
 - [ ] Enable secure database saving — blocked until the external service provides an authorised household-scoped write connection.
