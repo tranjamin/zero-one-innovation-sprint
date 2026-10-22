@@ -26,7 +26,7 @@ export function timelineWindows(rows: DataRow[]) {
  return windows;
 }
 export const householdOptions = () => queryOptions({queryKey:['energy-household'],staleTime:60000,queryFn:async () => {
- const {data,error}=await supabase.from('households').select('*').eq('display_name','Ben').single();
+ const {data,error}=await supabase.from('households').select('*').eq('code','H002').single();
  if(error) throw error; return data as DataRow;
 }});
 export const scenarioOptions = (householdId:string,day:EnergyDay,mode:EnergyMode) => queryOptions({queryKey:['energy-scenario',householdId,day,mode],staleTime:60000,queryFn:async () => {
@@ -46,5 +46,5 @@ export const scenarioOptions = (householdId:string,day:EnergyDay,mode:EnergyMode
  if(community.error) throw community.error;
  return {overview,timeline,devices:joinDeviceValues(plans,(values ?? []) as DataRow[]),communityData:(community.data ?? {}) as DataRow,trades:results[3]?.data as DataRow[]};
 }});
-export const DATA_NOTE = 'Demo data: real Austrian day-ahead prices (EPEX via aWATTar) for 15 Jul and 21 Jan 2026; household profiles and solar are modelled. Assumptions: grid fee 8 ct/kWh, 40 % grid-fee discount within the community, neighbour price 7 ct/kWh (or market if higher), 1 ct/kWh platform fee.';
-export const FIXED_TARIFF_TEXT = 'You keep your fixed price of {price} ct/kWh. Moving appliances lets Wien Energie buy cheaper energy, and you get 30 % of that saving as credits.';
+export const DATA_NOTE = 'Demo data: real Austrian day-ahead prices (EPEX) for 15 Jul and 21 Jan 2026; household profiles and solar are modelled. 2026 tariffs: energy 9.99 ct/kWh, grid fee 6.98 ct/kWh (5.58 ct 10–16 h in summer), losses 0.70 ct, levies 0.72 ct; energy-community grid-fee discount −57 % in the neighbourhood, −28 % in the region; feed-in 6.13 ct/kWh. The saving on each shared kWh is split 50 % buyer, 30 % seller, 20 % Wien Energie.';
+export const FIXED_TARIFF_TEXT = 'You keep your fixed price of {price} ct/kWh. Moving appliances lets Wien Energie buy cheaper energy, and you get 40 % of that saving as credits.';
