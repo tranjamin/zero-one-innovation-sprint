@@ -56,6 +56,7 @@ function EnergyFlow() {
   return (
     <div className="space-y-3">
       <svg viewBox="0 0 320 240" className="w-full rounded-lg bg-muted" role="img" aria-label="Top-down schematic of energy charging an EV and boiler">
+        <style>{`@keyframes flowPulse{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}.flow-pulse{animation:flowPulse 2.4s linear infinite}@media (prefers-reduced-motion:reduce){.flow-pulse{animation:none}}`}</style>
         <text x="12" y="16" className="fill-foreground" fontSize="12" fontWeight="700">{fmt(hour)}</text>
         {/* Wires (orthogonal, schematic style) into the home's distribution bus at (160,120) */}
         {wire("M44 120 H 120", m.plant, "stroke-destructive")}
