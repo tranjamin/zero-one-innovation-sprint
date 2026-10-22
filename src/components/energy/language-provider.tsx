@@ -6,7 +6,7 @@ type LanguageContextValue = { language: Language; setLanguage: (language: Langua
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 export function LanguageProvider({ children }: { children: ReactNode }) {
  const pathname = useRouterState({select: state => state.location.pathname});
- const [language, setLanguage] = useState<Language>('de');
+ const [language, setLanguage] = useState<Language>('en');
  useEffect(() => {
   document.documentElement.lang = language;
   const updateMetadata = () => {

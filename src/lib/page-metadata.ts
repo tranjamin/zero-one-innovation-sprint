@@ -71,7 +71,7 @@ const pages: Record<string, {en: string[]; de: string[]}> = {
     ]
   }
 };
-export function pageMetadata(path: string, language: Language = "de") {
+export function pageMetadata(path: string, language: Language = "en") {
  const [name, description] = (pages[path] ?? pages["/"])?.[language] ?? ["Wien Energie", "Smart Energy"];
  const title = `${name} | Wien Energie Smart Energy`;
  return {meta:[{title},{name:"description",content:description},{property:"og:title",content:title},{property:"og:description",content:description},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"}]};
