@@ -64,6 +64,8 @@ export function splitEvenly(kwh: number, members: number) { return members > 0 ?
 /** Illustrative household solar production when the supplied profile has none. */
 export const sampleHouseholdSolarKwh = 14.6;
 /** Illustrative next predicted community surplus window and the appliances charging in it. Other members are anonymised. */
-export const sampleNextSurplus = {window:'11:00–15:00', totalKwh:40.0, devices:[
+export const sampleNextSurplus = {window:'11:00–15:00', totalKwh:40.0, yourSolarSentKwh:5.4, devices:[
  {owner:'you',type:'ev',kwh:4.2},{owner:'you',type:'boiler',kwh:2.1},
- {owner:'Member A',type:'ev',kwh:6.3},{owner:'Member B',type:'heat_pump',kwh:4.6},{owner:'Member C',type:'boiler',kwh:3.8},{owner:'Member D',type:'washer',kwh:1.2},{owner:'Member E',type:'ev',kwh:6.3},{owner:'Member F',type:'battery',kwh:5.6}]} as const;
+ {owner:'Familie Hofer',type:'ev',kwh:6.3},{owner:'Familie Lindner',type:'heat_pump',kwh:4.6},{owner:'Familie Krenn',type:'boiler',kwh:3.8},{owner:'Familie Danner',type:'washer',kwh:1.2},{owner:'Familie Prem',type:'ev',kwh:6.3},{owner:'Familie Zöchling',type:'battery',kwh:5.6}]} as const;
+/** Illustrative solar the user sends to the community on the selected day when the data shows none. */
+export const sampleSolarSentKwh = 6.2;

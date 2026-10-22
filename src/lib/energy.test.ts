@@ -46,6 +46,7 @@ describe('even community split', () => { it('splits 11.2 kWh across 8 members as
 import { sampleNextSurplus } from './energy';
 import { describe as d2, it as i2, expect as e2 } from 'vitest';
 d2('next surplus sample', () => {
- i2('never exposes real names of other members', () => { for (const x of sampleNextSurplus.devices) e2(x.owner === 'you' || /^Member [A-Z]$/.test(x.owner)).toBe(true); });
+ i2('other members use placeholder names only', () => { for (const x of sampleNextSurplus.devices) e2(x.owner === 'you' || /^Familie /.test(x.owner)).toBe(true); });
  i2('allocated energy does not exceed the predicted surplus', () => { e2(sampleNextSurplus.devices.reduce((a,x)=>a+x.kwh,0)).toBeLessThanOrEqual(sampleNextSurplus.totalKwh); });
 });
+d2('user sends solar', () => { i2('sample shows the user sending solar into the surplus', () => { e2(sampleNextSurplus.yourSolarSentKwh).toBeGreaterThan(0); }); });

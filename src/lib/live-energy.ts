@@ -6,7 +6,7 @@ export type EnergyMode = 'flex' | 'nachbarstrom';
 export const num = (row: DataRow, key: string) => Number(row[key] ?? 0);
 export const text = (row: DataRow, key: string) => String(row[key] ?? '');
 export const viennaTime = (value: string) => !value ? '—' : /^\d{2}:\d{2}$/.test(value) ? value : new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Vienna'}).format(new Date(value));
-export const sourceNames: Record<string,string> = {own:'Your solar',community:"Neighbours' solar",market:'Grid (cheap hours)'};
+export const sourceNames: Record<string,string> = {own:'Your solar',community:"Community surplus",market:'Grid (cheap hours)'};
 export function householdSolarGeneration(rows: DataRow[]) {
  if (!rows.length || rows.some(row => row['solar_kw'] == null || !Number.isFinite(Number(row['solar_kw'])))) return null;
  return rows.reduce((total,row) => total + num(row,'solar_kw') * .25, 0);
