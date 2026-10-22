@@ -402,7 +402,6 @@ export const german: Record<string, string> = {
   "Tomorrow, 23 Oct": "Morgen, 23. Okt.",
   "Next forecast day": "Nächster Prognosetag",
   "Grid price": "Netzstrompreis",
-  "Community surplus": "Gemeinschaftsüberschuss",
   "Planned charging": "Geplante Ladung",
   "Local solar window": "Lokaler Solarzeitraum",
   "Today": "Heute",
