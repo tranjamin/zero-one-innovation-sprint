@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AppliancesRouteImport } from './routes/appliances'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as InfoRouteImport } from './routes/info'
@@ -19,6 +20,11 @@ import { Route as SettingsRouteImport } from './routes/settings'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppliancesRoute = AppliancesRouteImport.update({
@@ -49,6 +55,7 @@ const SettingsRoute = SettingsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/appliances': typeof AppliancesRoute
   '/community': typeof CommunityRoute
   '/info': typeof InfoRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/appliances': typeof AppliancesRoute
   '/community': typeof CommunityRoute
   '/info': typeof InfoRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/appliances': typeof AppliancesRoute
   '/community': typeof CommunityRoute
   '/info': typeof InfoRoute
@@ -75,12 +84,26 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/appliances' | '/community' | '/info' | '/savings' | '/settings'
+    | '/'
+    | '/about'
+    | '/appliances'
+    | '/community'
+    | '/info'
+    | '/savings'
+    | '/settings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/appliances' | '/community' | '/info' | '/savings' | '/settings'
+  to:
+    | '/'
+    | '/about'
+    | '/appliances'
+    | '/community'
+    | '/info'
+    | '/savings'
+    | '/settings'
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/appliances'
     | '/community'
     | '/info'
@@ -90,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   AppliancesRoute: typeof AppliancesRoute
   CommunityRoute: typeof CommunityRoute
   InfoRoute: typeof InfoRoute
@@ -104,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/appliances': {
@@ -146,6 +177,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AppliancesRoute: AppliancesRoute,
   CommunityRoute: CommunityRoute,
   InfoRoute: InfoRoute,
