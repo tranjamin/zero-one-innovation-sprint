@@ -1,9 +1,9 @@
 import { Link, useRouterState } from '@tanstack/react-router';
-import { LayoutDashboard, PlugZap, Users, Wallet, Settings, ArrowUpRight, ChevronDown, Bell, Zap, Leaf, X, Menu, CircleHelp } from 'lucide-react';
+import { LayoutDashboard, PlugZap, Users, Wallet, Settings, ArrowUpRight, ChevronDown, Bell, Zap, Leaf, X, Menu, CircleHelp, Info } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { useEnergy } from './energy-provider';
-const nav = [{to:'/',label:'Overview',icon:LayoutDashboard},{to:'/appliances',label:'Appliances',icon:PlugZap},{to:'/community',label:'Energy community',icon:Users},{to:'/savings',label:'Savings & credits',icon:Wallet},{to:'/settings',label:'Settings',icon:Settings}] as const;
+const nav = [{to:'/',label:'Overview',icon:LayoutDashboard},{to:'/appliances',label:'Appliances',icon:PlugZap},{to:'/community',label:'Energy community',icon:Users},{to:'/savings',label:'Savings & credits',icon:Wallet},{to:'/about',label:'About',icon:Info},{to:'/settings',label:'Settings',icon:Settings}] as const;
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select:s => s.location.pathname });
   const [menu, setMenu] = useState(false); const [showNotifications, setShowNotifications] = useState(false);
