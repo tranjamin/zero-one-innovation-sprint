@@ -2,6 +2,8 @@ import { useLanguage } from './language-provider';
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import {Checkbox} from '@/components/ui/checkbox';
+import {shouldShowIntro,rememberIntroPreference} from '@/lib/onboarding';
 import { Zap, Clock, Users, PiggyBank, ShieldCheck, ChevronLeft, ChevronRight } from "lucide-react";
 
 /** Illustrative share of supply per hour: local (neighbours), regional (wind/hydro), plant. */
@@ -148,7 +150,8 @@ const features = [
 export function IntroSlideshow() { const { t, language, setLanguage } = useLanguage(); 
   const [open, setOpen] = useState(false);
   const [i, setI] = useState(0);
-  useEffect(() => setOpen(true), []);
+  const [dontShowAgain,setDontShowAgain] = useState(false);
+  useEffect(() => setOpen(shouldShowIntro(localStorage)), []);
   const slides = [
     <div key="pitch" className="space-y-4 text-center">
       <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground"><Zap className="h-7 w-7" /></div>
@@ -185,6 +188,7 @@ export function IntroSlideshow() { const { t, language, setLanguage } = useLangu
         <DialogTitle className="sr-only">{t("Welcome to Wien Energie Smart Charging")}</DialogTitle>
         <DialogDescription className="sr-only">{t("Introduction slideshow")}</DialogDescription>
         {slides[i]}
+        <label className="flex items-center gap-2 text-sm text-muted-foreground"><Checkbox checked={dontShowAgain} onCheckedChange={checked=>{const hidden=checked===true;setDontShowAgain(hidden);rememberIntroPreference(localStorage,hidden)}}/>{t("Don't show again")}</label>
         <div className="mt-4 flex items-center justify-between">
           <Button variant="ghost" size="sm" disabled={i === 0} onClick={() => setI(i - 1)}><ChevronLeft className="h-4 w-4" />{t("Back")}</Button>
           <div className="flex gap-1.5">

@@ -12,3 +12,4 @@
 - [ ] Replace overview, charts, appliance plans, community and savings figures with queried data.
 - [ ] Preserve bilingual design, update data disclosures and verify all four scenarios and mobile layout.
 - [ ] Highlight community-surplus priority and even community-wide allocation across tabs; distinguish the intended policy from existing read-only results.
+- [ ] Add a bilingual “Don’t show again” onboarding preference and verify it survives reload.
