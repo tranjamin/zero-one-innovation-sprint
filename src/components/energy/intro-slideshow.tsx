@@ -66,7 +66,7 @@ function EnergyFlow() {
         {label(28, 150, "Power plant")}
         {/* Regional wind farm: rotors seen from above */}
         {([[288, 108], [300, 130], [280, 134]] as [number, number][]).map(([x, y], k) => (
-          <g key={k} style={{ transformOrigin: `${x}px ${y}px`, transform: `rotate(${hour * 400 * (0.4 + m.regional)}deg)` }}>
+          <g key={k} style={{ transformOrigin: `${x}px ${y}px`, transform: `rotate(${hour * 30}deg)` }}>
             <line x1={x - 7} y1={y} x2={x + 7} y2={y} className="stroke-info" strokeWidth="2" />
             <circle cx={x} cy={y} r="1.8" className="fill-foreground" />
           </g>
