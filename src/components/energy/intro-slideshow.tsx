@@ -125,8 +125,8 @@ function EnergyFlow() { const {t} = useLanguage();
         ))}
       </div>
       <div className="flex flex-wrap gap-2 text-xs">
-        <span className="rounded-full bg-secondary px-2 py-1">EV: {evOn ? t("charging") : t("waiting for cheaper energy")}</span>
-        <span className="rounded-full bg-secondary px-2 py-1">Boiler: {boilerOn ? t("heating") : t("waiting for cheaper energy")}</span>
+        <span className="rounded-full bg-secondary px-2 py-1">{t("EV")}: {evOn ? t("charging") : t("waiting for cheaper energy")}</span>
+        <span className="rounded-full bg-secondary px-2 py-1">{t("Boiler")}: {boilerOn ? t("heating") : t("waiting for cheaper energy")}</span>
       </div>
       <div className="flex items-center gap-3">
         <Button size="sm" variant="outline" onClick={() => setPlaying((p) => !p)}>{playing ? t("Pause") : t("Play")}</Button>
@@ -145,7 +145,7 @@ const features = [
   { icon: ShieldCheck, title: "You stay in control", text: "Set constraints like “car at 80% by 07:00” and override anytime." },
 ];
 
-export function IntroSlideshow() { const { t, language, number, setLanguage } = useLanguage(); 
+export function IntroSlideshow() { const { t, language, money, number, setLanguage } = useLanguage(); 
   const [open, setOpen] = useState(false);
   const [i, setI] = useState(0);
   useEffect(() => setOpen(true), []);
@@ -188,7 +188,7 @@ export function IntroSlideshow() { const { t, language, number, setLanguage } = 
           <Button variant="ghost" size="sm" disabled={i === 0} onClick={() => setI(i - 1)}><ChevronLeft className="h-4 w-4" />{t("Back")}</Button>
           <div className="flex gap-1.5">
             {slides.map((_, k) => (
-              <button key={k} aria-label={`Slide ${k + 1}`} onClick={() => setI(k)} className={`h-2 rounded-full transition-all ${k === i ? "w-6 bg-primary" : "w-2 bg-border"}`} />
+              <Button variant="ghost" size="icon" key={k} aria-label={t("Slide {number}", {number:k+1})} onClick={() => setI(k)} className={`h-2! min-w-0! p-0! rounded-full transition-all ${k === i ? "w-6 bg-primary" : "w-2 bg-border"}`} />
             ))}
           </div>
           <Button size="sm" onClick={() => (last ? setOpen(false) : setI(i + 1))}>{last ? t("Get started") : <>{t("Next")}<ChevronRight className="h-4 w-4" /></>}</Button>

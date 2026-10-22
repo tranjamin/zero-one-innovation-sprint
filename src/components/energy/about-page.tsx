@@ -30,7 +30,7 @@ const benefits = [
   { icon: Users, tag: 'ENERGY COMMUNITY', title: 'You run on the neighbour’s sunshine', body: 'Surplus that would otherwise be sold away is used at home instead — cheaper for you, and it stays local and renewable.' },
 ];
 
-export function AboutPage() { const { t, language, number, setLanguage } = useLanguage(); 
+export function AboutPage() { const { t, language, money, number, setLanguage } = useLanguage(); 
   const { tariff, community, appliances } = useEnergy();
   const projected = appliances.reduce((sum, a) => { const p = planCharging(a, energySlots, community); const b = benefit(p.energy, p.energy ? p.cost / p.energy : 0, 0.3, tariff); return sum + b.savings + b.credits; }, 0);
   return <>
