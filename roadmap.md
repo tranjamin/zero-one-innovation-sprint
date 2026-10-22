@@ -8,3 +8,6 @@
 - [x] Test source grouping and verify both languages and charging plans in the app.
 - [x] Make English the default app language and verify German remains selectable.
 - [x] Replace the overview plan banner with bilingual cheapest-energy and community-surplus usage recommendations; verify both community settings.
+- [ ] Connect the supplied public data views read-only and add shared day/mode selectors.
+- [ ] Replace overview, charts, appliance plans, community and savings figures with queried data.
+- [ ] Preserve bilingual design, update data disclosures and verify all four scenarios and mobile layout.
