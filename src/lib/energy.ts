@@ -61,3 +61,9 @@ export function scheduleLabel(plan: ReturnType<typeof planCharging>, t: (message
 }
 export const sampleSurplusHours = [{hour:'10:00',kwh:3.2},{hour:'11:00',kwh:6.4},{hour:'12:00',kwh:9.6},{hour:'13:00',kwh:11.2},{hour:'14:00',kwh:8.8},{hour:'15:00',kwh:4.8}];
 export function splitEvenly(kwh: number, members: number) { return members > 0 ? kwh / members : 0; }
+/** Illustrative household solar production when the supplied profile has none. */
+export const sampleHouseholdSolarKwh = 14.6;
+/** Illustrative next predicted community surplus window and the appliances charging in it. Other members are anonymised. */
+export const sampleNextSurplus = {window:'11:00–15:00', totalKwh:40.0, devices:[
+ {owner:'you',type:'ev',kwh:4.2},{owner:'you',type:'boiler',kwh:2.1},
+ {owner:'Member A',type:'ev',kwh:6.3},{owner:'Member B',type:'heat_pump',kwh:4.6},{owner:'Member C',type:'boiler',kwh:3.8},{owner:'Member D',type:'washer',kwh:1.2},{owner:'Member E',type:'ev',kwh:6.3},{owner:'Member F',type:'battery',kwh:5.6}]} as const;
