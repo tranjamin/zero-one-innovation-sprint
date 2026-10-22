@@ -1,15 +1,15 @@
 import { useLanguage } from './language-provider';
 import { Link } from '@tanstack/react-router';
-import { ArrowRight, ArrowUpRight, TrendingUp, Leaf, Zap, PlugZap, Sun, Clock3, Sparkles, ChevronDown } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, TrendingUp, Leaf, Zap, PlugZap, Sun, Clock3, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEnergy } from './energy-provider';
 import { PageHeading, ApplianceCard } from './primitives';
 import { PriceChart } from './price-chart';
 import neighbourhood from '@/assets/solar-neighbourhood.jpg';
-import { money, energySlots, planCharging } from '@/lib/energy';
+import { energySlots, planCharging, chargingWindows, demoNow, time, sourceLabels, type EnergySlot } from '@/lib/energy';
 export function Dashboard(){ const { t, language, money, number } = useLanguage(); const {appliances,community,tariff}=useEnergy();const active=appliances.filter(a=>a.enabled).length;
  return <><PageHeading eyebrow={t("THURSDAY, 22 OCTOBER 2026")} title={t("Good afternoon, Benjamin ☀")} description={t("Your home is using energy a little smarter today.")} action={<Button variant="outline" asChild className="period-button"><Link to="/savings">{t("This month")}<ChevronDown/></Link></Button>}/>
- <section className="smart-banner"><div className="smart-banner-icon"><Sparkles size={25}/></div><div><div className="flex items-center gap-3 flex-wrap"><h2>{t("Leave the timing to us.")}</h2><span className="banner-pill"><i/>{t("Smart optimisation is on")}</span></div><p>{community?t("We’re lining up your charging with local sunshine and lower prices."):t("We’re lining up your charging with the lowest energy prices.")} {t("Your deadlines come first.")}</p></div><Button variant="ghost" asChild className="banner-button"><Link to="/appliances">{t("View your plan")}<ArrowRight/></Link></Button></section>
+ <UsageRecommendations community={community}/>
  <section className="stats-grid" aria-label={t("Energy summary")}><div className="stat-card"><div className="stat-top"><span>{tariff==='fixed'?t("Credits this month"):t("Saved this month")}</span><span className="stat-icon stat-orange"><TrendingUp/></span></div><div className="stat-value">{money(32.4)}</div><div className="stat-foot"><span className="positive"><TrendingUp size={13}/>{number(18.6)}%</span><span>{t("vs. last month")}</span></div><div className="mini-bars">{[20,28,22,38,29,43,35,52,41,65,57,72,67,80,76,92].map((v,i)=><span key={i} className={`mini-bar mini-height-${Math.round(v/10)}`}/>)}</div></div>
  <div className="stat-card"><div className="stat-top"><span>{t("Energy optimised")}</span><span className="stat-icon stat-cyan"><Zap/></span></div><div className="stat-value">{number(124.8)}<span className="stat-unit">kWh</span></div><div className="stat-foot"><span className="positive">76%</span><span>{t("of your flexible consumption")}</span></div><div className="stat-progress"><span/></div></div>
  <div className="stat-card"><div className="stat-top"><span>{t("CO₂ avoided")}</span><span className="stat-icon stat-green"><Leaf/></span></div><div className="stat-value">{number(18.6)}<span className="stat-unit">kg</span></div><div className="stat-foot"><Leaf size={13} className="text-success"/><span>{t("Like planting a little more green.")}</span></div><div className="stat-bottom-label">{t("Small shifts. A lighter footprint.")}</div></div>
@@ -20,3 +20,24 @@ export function Dashboard(){ const { t, language, money, number } = useLanguage(
  </>;
 }
 function UsersIcon(){return <span className="text-lg">⌂</span>;}
+
+function UsageRecommendations({community}: {community: boolean}) {
+ const {t, language, number} = useLanguage();
+ const lowestPrice = Math.min(...energySlots.map(slot => slot.price));
+ const cheapestSlots = energySlots.filter(slot => slot.price === lowestPrice);
+ const surplusSlots = energySlots.filter(slot => slot.surplus > 0).map(slot => ({...slot, source: 'community' as const}));
+ const dayFormat = new Intl.DateTimeFormat(language === 'de' ? 'de-AT' : 'en-GB', {day:'numeric', month:'short', timeZone:'Europe/Vienna'});
+ const today = dayFormat.format(new Date(demoNow));
+ const windows = (slots: EnergySlot[]) => chargingWindows(slots).map(window => {
+   const day = dayFormat.format(new Date(window.start));
+   return <div className="usage-window" key={window.start}><strong>{time(window.start)}–{time(window.end)}</strong><span>{day === today ? t('Today') : t('Tomorrow')} · {t(sourceLabels[window.source])}</span></div>;
+ });
+ return <section className="usage-recommendations" aria-labelledby="usage-recommendations-title">
+   <div className="usage-heading"><Clock3 size={20}/><h2 id="usage-recommendations-title">{t('Recommended usage times')}</h2><span>{t('Next 24 hours')}</span></div>
+   <div className="usage-options">
+     {community && surplusSlots.length > 0 && <div className="usage-option usage-local"><div className="usage-label"><Sun size={18}/><h3>{t('Expected community surplus')}</h3></div>{windows(surplusSlots)}<p>{t('Neighbours’ solar · up to {power} kW forecast surplus', {power:number(Math.max(...surplusSlots.map(slot => slot.surplus)))})}</p></div>}
+     <div className="usage-option"><div className="usage-label"><Zap size={18}/><h3>{t('Cheapest energy')}</h3></div>{windows(cheapestSlots)}<p>{t('{price} ct/kWh · lowest forecast price', {price:number(lowestPrice * 100)})}</p></div>
+   </div>
+   <p className="usage-note">{t('Illustrative forecast · Use flexible appliances in these windows when your deadlines allow.')}</p>
+ </section>;
+}
