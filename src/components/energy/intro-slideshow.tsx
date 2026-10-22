@@ -24,45 +24,87 @@ function EnergyFlow() {
     return () => clearInterval(t);
   }, [playing]);
   const m = mix(hour);
-  const sunX = 20 + (hour / 24) * 280;
-  const sunY = 70 - m.sun * 55;
-  const flows = [
-    { key: "plant", label: "Power plant", d: "M40 150 C 90 150, 120 175, 160 180", share: m.plant, cls: "stroke-destructive" },
-    { key: "regional", label: "Regional wind & hydro", d: "M280 150 C 230 150, 200 175, 160 180", share: m.regional, cls: "stroke-info" },
-    { key: "local", label: "Neighbours' solar", d: "M160 110 C 160 130, 160 150, 160 180", share: m.local, cls: "stroke-success" },
-  ];
+  // Illustrative plan: charge when local/regional supply is high (cheap), pause in the evening peak.
+  const evOn = (hour >= 0 && hour < 5) || (hour >= 11 && hour < 16);
+  const boilerOn = (hour >= 2 && hour < 4) || (hour >= 12 && hour < 15);
+  const prog = (h: number, wins: [number, number][]) =>
+    wins.reduce((s, [a, b]) => s + Math.max(0, Math.min(h, b) - a) / (b - a), 0) / wins.length;
+  const evPct = Math.round(30 + 50 * prog(hour, [[0, 5], [11, 16]]));
+  const boilerPct = Math.round(20 + 80 * prog(hour, [[2, 4], [12, 15]]));
   const fmt = (h: number) => `${String(Math.floor(h)).padStart(2, "0")}:${String(Math.floor((h % 1) * 60)).padStart(2, "0")}`;
+  const wire = (d: string, share: number, cls: string, on = true) => (
+    <g>
+      <path d={d} fill="none" className="stroke-border" strokeWidth="3" />
+      {on && share > 0.02 && (
+        <path d={d} fill="none" className={cls} strokeWidth={1.5 + share * 3} strokeDasharray="3 7"
+          style={{ strokeDashoffset: -hour * 150 }} opacity={0.4 + share * 0.6} />
+      )}
+    </g>
+  );
+  const label = (x: number, y: number, t: string) => (
+    <text x={x} y={y} textAnchor="middle" className="fill-muted-foreground" fontSize="8">{t}</text>
+  );
+  const anyLoad = evOn || boilerOn;
   return (
     <div className="space-y-3">
-      <svg viewBox="0 0 320 220" className="w-full rounded-lg bg-muted" role="img" aria-label="Animated energy flow during the day">
-        <circle cx={sunX} cy={sunY} r="9" className="fill-primary" opacity={m.sun > 0.02 ? 1 : 0.15} />
-        {/* plant */}
-        <rect x="20" y="130" width="28" height="30" className="fill-secondary stroke-border" />
-        <rect x="26" y="112" width="6" height="18" className="fill-secondary stroke-border" />
-        {/* wind turbine */}
-        <line x1="285" y1="160" x2="285" y2="120" className="stroke-foreground" strokeWidth="2" />
-        <g style={{ transformOrigin: "285px 120px", transform: `rotate(${hour * 360}deg)` }}>
-          {[0, 120, 240].map((a) => (
-            <line key={a} x1="285" y1="120" x2="285" y2="104" className="stroke-foreground" strokeWidth="2" transform={`rotate(${a} 285 120)`} />
-          ))}
-        </g>
-        {/* neighbours with solar */}
-        {[130, 160, 190].map((x) => (
-          <g key={x}>
-            <polygon points={`${x - 12},100 ${x},88 ${x + 12},100`} className="fill-success" opacity={0.4 + m.sun * 0.6} />
-            <rect x={x - 10} y="100" width="20" height="14" className="fill-secondary stroke-border" />
+      <svg viewBox="0 0 320 240" className="w-full rounded-lg bg-muted" role="img" aria-label="Top-down schematic of energy charging an EV and boiler">
+        <text x="12" y="16" className="fill-foreground" fontSize="12" fontWeight="700">{fmt(hour)}</text>
+        {/* Wires (orthogonal, schematic style) into the home's distribution bus at (160,120) */}
+        {wire("M44 120 H 120", m.plant, "stroke-destructive")}
+        {wire("M276 120 H 200", m.regional, "stroke-info")}
+        {wire("M160 44 V 92", m.local, "stroke-success")}
+        {wire("M140 148 V 175 H 80 V 190", 1, "stroke-primary", evOn)}
+        {wire("M180 148 V 175 H 240 V 190", 1, "stroke-primary", boilerOn)}
+        {/* Junction nodes */}
+        {([[120, 120], [200, 120], [160, 92], [140, 148], [180, 148]] as [number, number][]).map(([x, y]) => (
+          <circle key={`${x}-${y}`} cx={x} cy={y} r="2.5" className="fill-foreground" />
+        ))}
+        {/* Power plant: top-down roof with two cooling towers */}
+        <rect x="12" y="104" width="32" height="32" rx="2" className="fill-secondary stroke-foreground" />
+        <circle cx="22" cy="114" r="5" className="fill-card stroke-foreground" />
+        <circle cx="34" cy="126" r="5" className="fill-card stroke-foreground" />
+        {label(28, 150, "Power plant")}
+        {/* Regional wind farm: rotors seen from above */}
+        {([[288, 108], [300, 130], [280, 134]] as [number, number][]).map(([x, y], k) => (
+          <g key={k} style={{ transformOrigin: `${x}px ${y}px`, transform: `rotate(${hour * 400 * (0.4 + m.regional)}deg)` }}>
+            <line x1={x - 7} y1={y} x2={x + 7} y2={y} className="stroke-info" strokeWidth="2" />
+            <circle cx={x} cy={y} r="1.8" className="fill-foreground" />
           </g>
         ))}
-        {/* your home */}
-        <polygon points="140,180 160,165 180,180" className="fill-primary" />
-        <rect x="144" y="180" width="32" height="22" className="fill-card stroke-primary" />
-        <text x="160" y="215" textAnchor="middle" className="fill-muted-foreground" fontSize="9">Your home</text>
-        {flows.map((f) => (
-          <path key={f.key} d={f.d} fill="none" className={f.cls} strokeLinecap="round"
-            strokeWidth={1 + f.share * 9} strokeDasharray="4 8" opacity={0.25 + f.share}
-            style={{ strokeDashoffset: -hour * 120 }} />
+        {label(290, 152, "Regional wind")}
+        {/* Neighbours: rooftops with solar panel grids */}
+        {[110, 160, 210].map((x) => (
+          <g key={x}>
+            <rect x={x - 16} y="18" width="32" height="22" rx="2" className="fill-secondary stroke-border" />
+            {[0, 1, 2].map((c) => [0, 1].map((r) => (
+              <rect key={`${c}${r}`} x={x - 13 + c * 9} y={21 + r * 8} width="8" height="7" className="fill-success" opacity={0.2 + m.sun * 0.8} />
+            )))}
+            {x !== 160 && <path d={`M${x} 40 V 44 H 160`} fill="none" className="stroke-border" strokeWidth="2" />}
+          </g>
         ))}
-        <text x="160" y="20" textAnchor="middle" className="fill-foreground" fontSize="13" fontWeight="700">{fmt(hour)}</text>
+        {label(160, 12, "Neighbours' solar")}
+        {/* Your home: floor plan with bus bar */}
+        <rect x="120" y="92" width="80" height="56" rx="3" className="fill-card stroke-primary" strokeWidth="1.5" />
+        <rect x="132" y="116" width="56" height="8" rx="1" className={anyLoad ? "fill-primary" : "fill-border"} />
+        {label(160, 108, "Your home")}
+        {label(160, 140, "Smart controller")}
+        {/* EV: car from above */}
+        <g>
+          <rect x="62" y="190" width="36" height="40" rx="8" className="fill-card stroke-foreground" />
+          <rect x="67" y="196" width="26" height="8" rx="2" className="fill-secondary" />
+          <rect x="66" y="212" width="28" height="12" rx="1" className="fill-border" />
+          <rect x="66" y="212" width={28 * (evPct / 100)} height="12" rx="1" className={evOn ? "fill-primary" : "fill-muted-foreground"} />
+          <text x="80" y="221" textAnchor="middle" className="fill-foreground" fontSize="7" fontWeight="700">{evPct}%</text>
+          {label(122, 214, "EV")}
+        </g>
+        {/* Boiler: round tank from above */}
+        <g>
+          <circle cx="240" cy="210" r="19" className="fill-card stroke-foreground" />
+          <circle cx="240" cy="210" r="15" className="fill-border" />
+          <circle cx="240" cy="210" r={15 * Math.sqrt(boilerPct / 100)} className={boilerOn ? "fill-destructive" : "fill-muted-foreground"} opacity="0.8" />
+          <text x="240" y="213" textAnchor="middle" className="fill-foreground" fontSize="7" fontWeight="700">{boilerPct}%</text>
+          {label(282, 214, "Boiler")}
+        </g>
       </svg>
       <div className="grid grid-cols-3 gap-2 text-xs">
         {[["Local", m.local, "bg-success"], ["Regional", m.regional, "bg-info"], ["Power plant", m.plant, "bg-destructive"]].map(([l, v, c]) => (
@@ -72,12 +114,16 @@ function EnergyFlow() {
           </div>
         ))}
       </div>
+      <div className="flex flex-wrap gap-2 text-xs">
+        <span className="rounded-full bg-secondary px-2 py-1">EV: {evOn ? "charging" : "waiting for cheaper energy"}</span>
+        <span className="rounded-full bg-secondary px-2 py-1">Boiler: {boilerOn ? "heating" : "waiting for cheaper energy"}</span>
+      </div>
       <div className="flex items-center gap-3">
         <Button size="sm" variant="outline" onClick={() => setPlaying((p) => !p)}>{playing ? "Pause" : "Play"}</Button>
         <input type="range" min={0} max={23.9} step={0.1} value={hour} aria-label="Time of day"
           onChange={(e) => { setPlaying(false); setHour(Number(e.target.value)); }} className="flex-1 accent-primary" />
       </div>
-      <p className="text-xs text-muted-foreground">Illustrative: midday solar from neighbours, regional wind overnight, power plants cover the evening peak. We charge your devices when the cleanest, cheapest energy is flowing.</p>
+      <p className="text-xs text-muted-foreground">Illustrative: the EV and boiler charge overnight on regional wind and at midday on neighbours' solar, and pause during the evening power-plant peak.</p>
     </div>
   );
 }
