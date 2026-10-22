@@ -1,3 +1,4 @@
+import { useLanguage } from './language-provider';
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,7 @@ function mix(hour: number) {
   return { local: local / total, regional: regional / total, plant: plant / total, sun };
 }
 
-function EnergyFlow() {
+function EnergyFlow() { const {t} = useLanguage();
   const [hour, setHour] = useState(6);
   const [playing, setPlaying] = useState(true);
   useEffect(() => {
@@ -55,7 +56,7 @@ function EnergyFlow() {
   const anyLoad = evOn || boilerOn;
   return (
     <div className="space-y-3">
-      <svg viewBox="0 0 320 240" className="w-full rounded-lg bg-muted" role="img" aria-label="Top-down schematic of energy charging an EV and boiler">
+      <svg viewBox="0 0 320 240" className="w-full rounded-lg bg-muted" role="img" aria-label={t("Top-down schematic of energy charging an EV and boiler")}>
         <style>{`@keyframes flowPulse{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}.flow-pulse{animation:flowPulse 2.4s linear infinite}@media (prefers-reduced-motion:reduce){.flow-pulse{animation:none}}`}</style>
         <text x="12" y="16" className="fill-foreground" fontSize="12" fontWeight="700">{fmt(hour)}</text>
         {/* Wires (orthogonal, schematic style) into the home's distribution bus at (160,120) */}
@@ -72,7 +73,7 @@ function EnergyFlow() {
         <rect x="12" y="104" width="32" height="32" rx="2" className="fill-secondary stroke-foreground" />
         <circle cx="22" cy="114" r="5" className="fill-card stroke-foreground" />
         <circle cx="34" cy="126" r="5" className="fill-card stroke-foreground" />
-        {label(28, 150, "Power plant")}
+        {label(28, 150, t("Power plant"))}
         {/* Regional wind farm: rotors seen from above */}
         {([[288, 108], [300, 130], [280, 134]] as [number, number][]).map(([x, y], k) => (
           <g key={k} style={{ transformOrigin: `${x}px ${y}px`, transform: `rotate(${hour * 30}deg)` }}>
@@ -80,7 +81,7 @@ function EnergyFlow() {
             <circle cx={x} cy={y} r="1.8" className="fill-foreground" />
           </g>
         ))}
-        {label(290, 152, "Regional wind")}
+        {label(290, 152, t("Regional wind"))}
         {/* Neighbours: rooftops with solar panel grids */}
         {[110, 160, 210].map((x) => (
           <g key={x}>
@@ -91,12 +92,12 @@ function EnergyFlow() {
             {x !== 160 && <path d={`M${x} 40 V 44 H 160`} fill="none" className="stroke-border" strokeWidth="2" />}
           </g>
         ))}
-        {label(160, 12, "Neighbours' solar")}
+        {label(160, 12, t("Neighbours' solar"))}
         {/* Your home: floor plan with bus bar */}
         <rect x="120" y="92" width="80" height="56" rx="3" className="fill-card stroke-primary" strokeWidth="1.5" />
         <rect x="132" y="116" width="56" height="8" rx="1" className={anyLoad ? "fill-primary" : "fill-border"} />
-        {label(160, 108, "Your home")}
-        {label(160, 140, "Smart controller")}
+        {label(160, 108, t("Your home"))}
+        {label(160, 140, t("Smart controller"))}
         {/* EV: car from above */}
         <g>
           <rect x="62" y="190" width="36" height="40" rx="8" className="fill-card stroke-foreground" />
@@ -104,7 +105,7 @@ function EnergyFlow() {
           <rect x="66" y="212" width="28" height="12" rx="1" className="fill-border" />
           <rect x="66" y="212" width={28 * (evPct / 100)} height="12" rx="1" className={evOn ? "fill-primary" : "fill-muted-foreground"} />
           <text x="80" y="221" textAnchor="middle" className="fill-foreground" fontSize="7" fontWeight="700">{evPct}%</text>
-          {label(122, 214, "EV")}
+          {label(122, 214, t("EV"))}
         </g>
         {/* Boiler: round tank from above */}
         <g>
@@ -112,27 +113,27 @@ function EnergyFlow() {
           <circle cx="240" cy="210" r="15" className="fill-border" />
           <circle cx="240" cy="210" r={15 * Math.sqrt(boilerPct / 100)} className={boilerOn ? "fill-destructive" : "fill-muted-foreground"} opacity="0.8" />
           <text x="240" y="213" textAnchor="middle" className="fill-foreground" fontSize="7" fontWeight="700">{boilerPct}%</text>
-          {label(282, 214, "Boiler")}
+          {label(282, 214, t("Boiler"))}
         </g>
       </svg>
       <div className="grid grid-cols-3 gap-2 text-xs">
-        {[["Local", m.local, "bg-success"], ["Regional", m.regional, "bg-info"], ["Power plant", m.plant, "bg-destructive"]].map(([l, v, c]) => (
-          <div key={l as string} className="rounded-md border border-border p-2">
+        {[[t("Local"), m.local, "bg-success"], [t("Regional"), m.regional, "bg-info"], [t("Power plant"), m.plant, "bg-destructive"]].map(([l, v, c]) => (
+          <div key={t(l as string)} className="rounded-md border border-border p-2">
             <div className="flex items-center gap-1.5 text-muted-foreground"><span className={`h-2 w-2 rounded-full ${c}`} />{l as string}</div>
             <div className="mt-1 font-display text-base font-bold">{Math.round((v as number) * 100)}%</div>
           </div>
         ))}
       </div>
       <div className="flex flex-wrap gap-2 text-xs">
-        <span className="rounded-full bg-secondary px-2 py-1">EV: {evOn ? "charging" : "waiting for cheaper energy"}</span>
-        <span className="rounded-full bg-secondary px-2 py-1">Boiler: {boilerOn ? "heating" : "waiting for cheaper energy"}</span>
+        <span className="rounded-full bg-secondary px-2 py-1">EV: {evOn ? t("charging") : t("waiting for cheaper energy")}</span>
+        <span className="rounded-full bg-secondary px-2 py-1">Boiler: {boilerOn ? t("heating") : t("waiting for cheaper energy")}</span>
       </div>
       <div className="flex items-center gap-3">
-        <Button size="sm" variant="outline" onClick={() => setPlaying((p) => !p)}>{playing ? "Pause" : "Play"}</Button>
-        <input type="range" min={0} max={23} step={1} value={hour} aria-label="Time of day"
+        <Button size="sm" variant="outline" onClick={() => setPlaying((p) => !p)}>{playing ? t("Pause") : t("Play")}</Button>
+        <input type="range" min={0} max={23} step={1} value={hour} aria-label={t("Time of day")}
           onChange={(e) => { setPlaying(false); setHour(Number(e.target.value)); }} className="flex-1 accent-primary" />
       </div>
-      <p className="text-xs text-muted-foreground">Illustrative: the EV and boiler charge overnight on regional wind and at midday on neighbours' solar, and pause during the evening power-plant peak.</p>
+      <p className="text-xs text-muted-foreground">{t("Illustrative: the EV and boiler charge overnight on regional wind and at midday on neighbours' solar, and pause during the evening power-plant peak.")}</p>
     </div>
   );
 }
@@ -144,35 +145,35 @@ const features = [
   { icon: ShieldCheck, title: "You stay in control", text: "Set constraints like “car at 80% by 07:00” and override anytime." },
 ];
 
-export function IntroSlideshow() {
+export function IntroSlideshow() { const { t, language, number, setLanguage } = useLanguage(); 
   const [open, setOpen] = useState(false);
   const [i, setI] = useState(0);
   useEffect(() => setOpen(true), []);
   const slides = [
     <div key="pitch" className="space-y-4 text-center">
       <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground"><Zap className="h-7 w-7" /></div>
-      <h2 className="font-display text-2xl font-bold">Charge smarter. Pay less. Share more.</h2>
-      <p className="text-muted-foreground">Wien Energie Smart Charging automatically runs your biggest appliances when power is cheapest and greenest — using your neighbours' solar surplus first.</p>
+      <h2 className="font-display text-2xl font-bold">{t("Charge smarter. Pay less. Share more.")}</h2>
+      <p className="text-muted-foreground">{t("Wien Energie Smart Charging automatically runs your biggest appliances when power is cheapest and greenest — using your neighbours' solar surplus first.")}</p>
       <div className="grid grid-cols-3 gap-2 pt-2 text-sm">
-        {[["up to 30%", "lower charging costs"], ["0 effort", "set it once"], ["more local", "community energy"]].map(([a, b]) => (
-          <div key={a} className="rounded-md bg-muted p-3"><div className="font-display font-bold text-primary">{a}</div><div className="text-xs text-muted-foreground">{b}</div></div>
+        {[[t("up to 30%"), t("lower charging costs")], [t("0 effort"), t("set it once")], [t("more local"), t("community energy")]].map(([a, b]) => (
+          <div key={a} className="rounded-md bg-muted p-3"><div className="font-display font-bold text-primary">{t(a)}</div><div className="text-xs text-muted-foreground">{t(b)}</div></div>
         ))}
       </div>
     </div>,
     <div key="features" className="space-y-4">
-      <h2 className="font-display text-xl font-bold">Key features</h2>
+      <h2 className="font-display text-xl font-bold">{t("Key features")}</h2>
       <div className="grid gap-3 sm:grid-cols-2">
         {features.map((f) => (
-          <div key={f.title} className="rounded-lg border border-border p-3">
+          <div key={t(f.title)} className="rounded-lg border border-border p-3">
             <f.icon className="h-5 w-5 text-primary" />
-            <div className="mt-2 font-semibold">{f.title}</div>
-            <p className="text-sm text-muted-foreground">{f.text}</p>
+            <div className="mt-2 font-semibold">{t(f.title)}</div>
+            <p className="text-sm text-muted-foreground">{t(f.text)}</p>
           </div>
         ))}
       </div>
     </div>,
     <div key="flow" className="space-y-3">
-      <h2 className="font-display text-xl font-bold">How energy moves through your day</h2>
+      <h2 className="font-display text-xl font-bold">{t("How energy moves through your day")}</h2>
       <EnergyFlow />
     </div>,
   ];
@@ -180,17 +181,17 @@ export function IntroSlideshow() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-h-[90dvh] max-w-lg overflow-y-auto">
-        <DialogTitle className="sr-only">Welcome to Wien Energie Smart Charging</DialogTitle>
-        <DialogDescription className="sr-only">Introduction slideshow</DialogDescription>
+        <DialogTitle className="sr-only">{t("Welcome to Wien Energie Smart Charging")}</DialogTitle>
+        <DialogDescription className="sr-only">{t("Introduction slideshow")}</DialogDescription>
         {slides[i]}
         <div className="mt-4 flex items-center justify-between">
-          <Button variant="ghost" size="sm" disabled={i === 0} onClick={() => setI(i - 1)}><ChevronLeft className="h-4 w-4" />Back</Button>
+          <Button variant="ghost" size="sm" disabled={i === 0} onClick={() => setI(i - 1)}><ChevronLeft className="h-4 w-4" />{t("Back")}</Button>
           <div className="flex gap-1.5">
             {slides.map((_, k) => (
               <button key={k} aria-label={`Slide ${k + 1}`} onClick={() => setI(k)} className={`h-2 rounded-full transition-all ${k === i ? "w-6 bg-primary" : "w-2 bg-border"}`} />
             ))}
           </div>
-          <Button size="sm" onClick={() => (last ? setOpen(false) : setI(i + 1))}>{last ? "Get started" : <>Next<ChevronRight className="h-4 w-4" /></>}</Button>
+          <Button size="sm" onClick={() => (last ? setOpen(false) : setI(i + 1))}>{last ? t("Get started") : <>{t("Next")}<ChevronRight className="h-4 w-4" /></>}</Button>
         </div>
       </DialogContent>
     </Dialog>
