@@ -291,7 +291,6 @@ export const german: Record<string, string> = {
   "Top-down schematic of energy charging an EV and boiler": "Draufsicht: Energiefluss zum Laden eines Elektroautos und eines Boilers",
   "Power plant": "Kraftwerk",
   "Regional wind": "Regionaler Wind",
-  "Neighbours' solar": "Solar der Nachbarn",
   "Your home": "Dein Zuhause",
   "Smart controller": "Ladesteuerung",
   "Local": "Lokal",
