@@ -1,4 +1,18 @@
 export const german: Record<string, string> = {
+  "Appliance type": "Gerätetyp",
+  "Model": "Modell",
+  "Location": "Standort",
+  "Power (kW)": "Leistung (kW)",
+  "Required energy (kWh)": "Benötigte Energie (kWh)",
+  "Keep draft": "Entwurf behalten",
+  "Save to household": "Im Haushalt speichern",
+  "Your connection currently allows reading only. Keep this as a draft; saving to your household and recalculating plans need authorised access.": "Deine Verbindung erlaubt derzeit nur das Lesen. Behalte einen Entwurf; Speichern im Haushalt und Neuberechnen benötigen autorisierten Zugriff.",
+  "Unsaved appliance drafts": "Ungespeicherte Geräteentwürfe",
+  "Not saved to household": "Nicht im Haushalt gespeichert",
+  "Edit draft": "Entwurf bearbeiten",
+  "Discard draft": "Entwurf verwerfen",
+  "Database plans are shown below. Drafts do not change these schedules until saved and recalculated.": "Unten stehen die gespeicherten Pläne. Entwürfe ändern diese Zeitpläne erst nach dem Speichern und Neuberechnen.",
+
   "Loading energy data": "Energiedaten werden geladen",
   "Don't show again": "Nicht mehr anzeigen",
   "COMMUNITY-FIRST POLICY": "GEMEINSCHAFT ZUERST",
