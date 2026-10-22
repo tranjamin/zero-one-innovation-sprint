@@ -39,7 +39,7 @@ export function planCharging(appliance: Appliance, slots: EnergySlot[], communit
 export const money = (value: number) => new Intl.NumberFormat('en-AT', { style: 'currency', currency: 'EUR' }).format(value);
 export const time = (iso: string) => new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Vienna' }).format(new Date(iso));
 export const sourceLabels: Record<EnergySource, string> = {
-  community: 'Community · neighbours’ solar', regional: 'Regional · wind / hydro', plant: 'Power plant · grid supply', grid: 'Grid · source not specified',
+  community: 'Community · community surplus', regional: 'Regional · wind / hydro', plant: 'Power plant · grid supply', grid: 'Grid · source not specified',
 };
 export function chargingWindows(slots: EnergySlot[]) {
   const windows: {start: string; end: string; source: EnergySource}[] = [];
