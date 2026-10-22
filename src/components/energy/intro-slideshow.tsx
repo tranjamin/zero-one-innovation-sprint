@@ -120,7 +120,7 @@ function EnergyFlow() {
       </div>
       <div className="flex items-center gap-3">
         <Button size="sm" variant="outline" onClick={() => setPlaying((p) => !p)}>{playing ? "Pause" : "Play"}</Button>
-        <input type="range" min={0} max={23.9} step={0.1} value={hour} aria-label="Time of day"
+        <input type="range" min={0} max={23} step={1} value={hour} aria-label="Time of day"
           onChange={(e) => { setPlaying(false); setHour(Number(e.target.value)); }} className="flex-1 accent-primary" />
       </div>
       <p className="text-xs text-muted-foreground">Illustrative: the EV and boiler charge overnight on regional wind and at midday on neighbours' solar, and pause during the evening power-plant peak.</p>
