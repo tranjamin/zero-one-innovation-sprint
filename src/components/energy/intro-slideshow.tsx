@@ -20,7 +20,7 @@ function EnergyFlow() {
   const [playing, setPlaying] = useState(true);
   useEffect(() => {
     if (!playing) return;
-    const t = setInterval(() => setHour((h) => (h + 0.1) % 24), 60);
+    const t = setInterval(() => setHour((h) => (h + 1) % 24), 1200);
     return () => clearInterval(t);
   }, [playing]);
   const m = mix(hour);
