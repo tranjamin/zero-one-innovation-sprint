@@ -145,7 +145,7 @@ const features = [
   { icon: ShieldCheck, title: "You stay in control", text: "Set constraints like “car at 80% by 07:00” and override anytime." },
 ];
 
-export function IntroSlideshow() { const { t, language, number } = useLanguage(); 
+export function IntroSlideshow() { const { t, language, setLanguage } = useLanguage(); 
   const [open, setOpen] = useState(false);
   const [i, setI] = useState(0);
   useEffect(() => setOpen(true), []);
@@ -155,7 +155,7 @@ export function IntroSlideshow() { const { t, language, number } = useLanguage()
       <h2 className="font-display text-2xl font-bold">{t("Charge smarter. Pay less. Share more.")}</h2>
       <p className="text-muted-foreground">{t("Wien Energie Smart Charging automatically runs your biggest appliances when power is cheapest and greenest — using your neighbours' solar surplus first.")}</p>
       <div className="grid grid-cols-3 gap-2 pt-2 text-sm">
-        {[[t("up to 30%"), t("lower charging costs")], [t("0 effort"), t("set it once")], [t("more local"), t("community energy")]].map(([a, b]) => (
+        {([["up to 30%", "lower charging costs"], ["0 effort", "set it once"], ["more local", "community energy"]] as [string, string][]).map(([a, b]) => (
           <div key={a} className="rounded-md bg-muted p-3"><div className="font-display font-bold text-primary">{t(a)}</div><div className="text-xs text-muted-foreground">{t(b)}</div></div>
         ))}
       </div>
@@ -181,6 +181,7 @@ export function IntroSlideshow() { const { t, language, number } = useLanguage()
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-h-[90dvh] max-w-lg overflow-y-auto">
+        <select className="native-select w-fit" aria-label={t('Language')} value={language} onChange={e => setLanguage(e.target.value === 'de' ? 'de' : 'en')}><option value="de">Deutsch</option><option value="en">English</option></select>
         <DialogTitle className="sr-only">{t("Welcome to Wien Energie Smart Charging")}</DialogTitle>
         <DialogDescription className="sr-only">{t("Introduction slideshow")}</DialogDescription>
         {slides[i]}

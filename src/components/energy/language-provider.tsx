@@ -16,7 +16,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
    }
   }
  }, [language, pathname]);
- const locale = language === 'de' ? 'de-AT' : 'en-AT';
+ const locale = language === 'de' ? 'de-AT' : 'en-GB';
  return <LanguageContext.Provider value={{ language, setLanguage, t: (message, values) => translate(language, message, values), money: value => new Intl.NumberFormat(locale, {style:'currency',currency:'EUR'}).format(value), number: value => new Intl.NumberFormat(locale).format(value) }}>{children}</LanguageContext.Provider>;
 }
 export function useLanguage() { const context = useContext(LanguageContext); if (!context) throw new Error('Language provider is required'); return context; }
