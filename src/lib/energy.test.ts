@@ -43,3 +43,9 @@ describe('Appliance constraints', () => {
 
 import { splitEvenly as _split } from './energy';
 describe('even community split', () => { it('splits 11.2 kWh across 8 members as 1.4 kWh each', () => { expect(_split(11.2, 8)).toBeCloseTo(1.4); }); it('returns 0 with no members', () => { expect(_split(5, 0)).toBe(0); }); });
+import { sampleNextSurplus } from './energy';
+import { describe as d2, it as i2, expect as e2 } from 'vitest';
+d2('next surplus sample', () => {
+ i2('never exposes real names of other members', () => { for (const x of sampleNextSurplus.devices) e2(x.owner === 'you' || /^Member [A-Z]$/.test(x.owner)).toBe(true); });
+ i2('allocated energy does not exceed the predicted surplus', () => { e2(sampleNextSurplus.devices.reduce((a,x)=>a+x.kwh,0)).toBeLessThanOrEqual(sampleNextSurplus.totalKwh); });
+});
