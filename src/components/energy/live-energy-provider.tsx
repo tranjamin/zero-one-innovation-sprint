@@ -7,7 +7,7 @@ type Value=ReturnType<typeof useData>;
 const Context=createContext<Value|null>(null);
 function useData(){
  const search=root.useSearch();
- const day:EnergyDay=search.day ?? '2026-06-21'; const mode:EnergyMode='nachbarstrom';
+ const day:EnergyDay=search.day ?? '2026-06-21'; const mode=('nachbarstrom' as EnergyMode);
  const navigate=useNavigate();
  const {data:household}=useSuspenseQuery(householdOptions());
  const {data}=useSuspenseQuery(scenarioOptions(text(household,'id'),day,mode));
