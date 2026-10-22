@@ -36,8 +36,8 @@ function EnergyFlow() {
     <g>
       <path d={d} fill="none" className="stroke-border" strokeWidth="3" />
       {on && share > 0.02 && (
-        <path d={d} fill="none" className={cls} strokeWidth={1.5 + share * 3} strokeDasharray="3 7"
-          style={{ strokeDashoffset: -hour * 150 }} opacity={0.4 + share * 0.6} />
+        <path d={d} fill="none" className={`${cls} animate-pulse`} strokeWidth={1.5 + share * 3}
+          style={{ animationDuration: "2.4s" }} opacity={0.45 + share * 0.5} />
       )}
     </g>
   );
