@@ -16,4 +16,5 @@
 - [x] Restore constraint editing and adding appliances as explicitly unsaved drafts, and polish appliance switches.
 - [ ] Remove redundant home navigation and overview sections; retain a concise appliance charging summary.
 - [ ] Reorder Energy Community around surplus windows, sharing and household production; remove its scenario controls and verify both languages.
+- [ ] Remove Community-first policy from Savings & credits while keeping community usage figures.
 - [ ] Enable secure database saving — blocked until the external service provides an authorised household-scoped write connection.
