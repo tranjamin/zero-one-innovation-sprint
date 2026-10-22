@@ -40,3 +40,6 @@ describe('Appliance constraints', () => {
     expect(planCharging({...car, deadline:'2026-10-22T13:00'}, energySlots, false).feasible).toBe(false);
   });
 });
+
+import { splitEvenly as _split } from './energy';
+describe('even community split', () => { it('splits 11.2 kWh across 8 members as 1.4 kWh each', () => { expect(_split(11.2, 8)).toBeCloseTo(1.4); }); it('returns 0 with no members', () => { expect(_split(5, 0)).toBe(0); }); });
