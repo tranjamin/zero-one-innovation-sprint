@@ -147,11 +147,12 @@ const features = [
   { icon: ShieldCheck, title: "You stay in control", text: "Set constraints like “car at 80% by 07:00” and override anytime." },
 ];
 
+let introPresented = false;
 export function IntroSlideshow() { const { t, language, setLanguage } = useLanguage(); 
   const [open, setOpen] = useState(false);
   const [i, setI] = useState(0);
   const [dontShowAgain,setDontShowAgain] = useState(false);
-  useEffect(() => setOpen(shouldShowIntro(localStorage)), []);
+  useEffect(() => {if(!introPresented){introPresented=true;setOpen(shouldShowIntro(localStorage));}}, []);
   const slides = [
     <div key="pitch" className="space-y-4 text-center">
       <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground"><Zap className="h-7 w-7" /></div>

@@ -1,3 +1,4 @@
+import {CommunityPolicy} from './community-policy';
 import { useLanguage } from './language-provider';
 import { PlugZap, Clock3, BarChart3, Sun, Leaf, Wallet, Users, TrendingUp, ArrowRight, ShieldCheck, Gift, CircleCheck } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
@@ -37,7 +38,7 @@ export function AboutPage() { const { t, language, money, number } = useLanguage
   const projected = num(overview,'saved_eur');
   return <>
     <PageHeading eyebrow={t("UNDER THE HOOD")} title={t("About Smart Energy")} description={t("How your charging plan is made — and what you get out of it.")} action={<Button variant="outline" asChild><Link to="/appliances" search={prev=>prev}>{t("See your plan")}<ArrowRight/></Link></Button>} />
-    <section className="about-steps">{steps.map(s => <article className="about-step" key={s.n}><div className="about-step-num"><i>{s.n}</i><s.icon size={17} /></div><h3>{t(s.title)}</h3><p>{t(s.body)}</p></article>)}</section>
+    <CommunityPolicy/><section className="about-steps">{steps.map(s => <article className="about-step" key={s.n}><div className="about-step-num"><i>{s.n}</i><s.icon size={17} /></div><h3>{t(s.title)}</h3><p>{t(s.body)}</p></article>)}</section>
     <div className="two-column-section">
       <section>
         <div className="section-heading"><div><h2>{t("What the optimiser reads")}</h2><p>{t("Four signals, refreshed every hour.")}</p></div><BarChart3 className="text-primary" /></div>

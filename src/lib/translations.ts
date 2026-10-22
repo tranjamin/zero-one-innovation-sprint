@@ -1,4 +1,17 @@
 export const german: Record<string, string> = {
+  "Don't show again": "Nicht mehr anzeigen",
+  "COMMUNITY-FIRST POLICY": "GEMEINSCHAFT ZUERST",
+  "One community. A fair share for everyone.": "Eine Gemeinschaft. Ein fairer Anteil für alle.",
+  "Community surplus first, balanced evenly across members. External energy covers the rest before your deadlines.": "Gemeinschaftsüberschuss zuerst, gleichmäßig unter Mitgliedern verteilt. Externe Energie deckt den Rest vor deinen Terminen.",
+  "Community surplus is always priced below external energy in the intended product, so it takes priority over the cheapest grid hours.": "Im vorgesehenen Produkt ist Gemeinschaftsüberschuss immer günstiger als externe Energie. Er hat deshalb Vorrang vor den günstigsten Netzstromzeiten.",
+  "Balanced across all members": "Ausgeglichen für alle Mitglieder",
+  "The optimiser coordinates every household together, balancing the available surplus evenly across members instead of letting one household take it all.": "Die Optimierung koordiniert alle Haushalte gemeinsam und verteilt verfügbare Überschüsse gleichmäßig unter den Mitgliedern, statt alles einem Haushalt zuzuweisen.",
+  "Grid energy fills the gaps": "Netzstrom deckt den Rest",
+  "Your appliances use your allocated community share first. The cheapest external energy covers remaining needs while respecting readiness deadlines.": "Deine Geräte nutzen zuerst deinen zugeteilten Gemeinschaftsanteil. Günstigste externe Energie deckt den Rest unter Einhaltung deiner Termine.",
+  "Intended policy, not a verified allocation. The read-only model results below may show different prices and uneven shares.": "Vorgesehene Regel, keine bestätigte Zuteilung. Die schreibgeschützten Modellergebnisse unten können abweichende Preise und ungleiche Anteile zeigen.",
+  "External fallback · lowest market price": "Externe Ergänzung · niedrigster Marktpreis",
+  "Community energy · first priority": "Gemeinschaftsenergie · erste Priorität",
+
   "Hi {name}": "Hallo {name}",
   "Summer · 21 Jun": "Sommer · 21. Juni",
   "Winter · 21 Jan": "Winter · 21. Jan.",
