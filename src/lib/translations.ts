@@ -1,4 +1,11 @@
 export const german: Record<string, string> = {
+  "Recommended usage times": "Empfohlene Nutzungszeiten",
+  "Next 24 hours": "Nächste 24 Stunden",
+  "Expected community surplus": "Erwarteter Gemeinschaftsüberschuss",
+  "Cheapest energy": "Günstigster Strom",
+  "Neighbours’ solar · up to {power} kW forecast surplus": "Solarstrom der Nachbarn · bis zu {power} kW erwarteter Überschuss",
+  "{price} ct/kWh · lowest forecast price": "{price} ct/kWh · niedrigster prognostizierter Preis",
+  "Illustrative forecast · Use flexible appliances in these windows when your deadlines allow.": "Beispielprognose · Nutze flexible Geräte in diesen Zeiträumen, wenn deine Termine es erlauben.",
   "Tell us what you have": "Sag uns, welche Geräte du hast",
   "Add each appliance and say what it is — an electric vehicle, a hot water boiler or a washing machine.": "Füge deine Geräte hinzu: Elektroauto, Warmwasserboiler oder Waschmaschine.",
   "Set a target and a deadline": "Lege Ziel und Fertigstellungszeit fest",
