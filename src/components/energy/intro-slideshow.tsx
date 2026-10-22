@@ -145,7 +145,7 @@ const features = [
   { icon: ShieldCheck, title: "You stay in control", text: "Set constraints like “car at 80% by 07:00” and override anytime." },
 ];
 
-export function IntroSlideshow() { const { t, language, money, number, setLanguage } = useLanguage(); 
+export function IntroSlideshow() { const { t, language, number } = useLanguage(); 
   const [open, setOpen] = useState(false);
   const [i, setI] = useState(0);
   useEffect(() => setOpen(true), []);
