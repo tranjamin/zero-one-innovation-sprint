@@ -16,3 +16,4 @@
 - Display external device run_windows unchanged and group quarter-hour timeline recommendations with timelineWindows, preserving gaps and source changes without recalculating supplied plans.
 - Store only the device-local onboarding opt-out in localStorage after hydration; it is a browser preference, not household data.
 - Distinguish intended community allocation policy from imported model outputs; read-only results cannot establish equal allocation or guaranteed community pricing.
+- Keep restored appliance edits/new devices as explicitly unsaved session drafts until an authenticated household-scoped write contract is supplied; never mutate plan views or claim imported schedules have been recalculated.
