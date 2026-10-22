@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import { EnergyProvider } from "@/components/energy/energy-provider";
 import { AppShell } from "@/components/energy/app-shell";
+import { IntroSlideshow } from "@/components/energy/intro-slideshow";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -127,7 +128,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <EnergyProvider><AppShell><Outlet /></AppShell></EnergyProvider>
+      <EnergyProvider><AppShell><Outlet /></AppShell><IntroSlideshow /></EnergyProvider>
     </QueryClientProvider>
   );
 }
