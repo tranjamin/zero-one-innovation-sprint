@@ -7,4 +7,4 @@
 - [x] Consolidate consecutive charging windows by source and label their energy origin.
 - [x] Test source grouping and verify both languages and charging plans in the app.
 - [x] Make English the default app language and verify German remains selectable.
-- [ ] Replace the overview plan banner with bilingual cheapest-energy and community-surplus usage recommendations; verify both community settings.
+- [x] Replace the overview plan banner with bilingual cheapest-energy and community-surplus usage recommendations; verify both community settings.
