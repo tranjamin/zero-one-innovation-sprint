@@ -1,4 +1,5 @@
 export const german: Record<string, string> = {
+  "Loading energy data": "Energiedaten werden geladen",
   "Don't show again": "Nicht mehr anzeigen",
   "COMMUNITY-FIRST POLICY": "GEMEINSCHAFT ZUERST",
   "One community. A fair share for everyone.": "Eine Gemeinschaft. Ein fairer Anteil für alle.",
