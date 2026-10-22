@@ -83,8 +83,8 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  validateSearch: (search: Record<string, unknown>): {day?:EnergyDay;mode?:EnergyMode} => ({day:search['day'] === '2026-01-21' ? '2026-01-21' : '2026-06-21',mode:search['mode'] === 'flex' ? 'flex' : 'nachbarstrom'}),
-  loaderDeps: ({search}) => ({day:search.day ?? '2026-06-21' as EnergyDay,mode:search.mode ?? 'nachbarstrom' as EnergyMode}),
+  validateSearch: (search: Record<string, unknown>): {day?:EnergyDay;mode?:EnergyMode} => ({day:search['day'] === '2026-01-21' ? '2026-01-21' : '2026-06-21',mode:'nachbarstrom'}),
+  loaderDeps: ({search}) => ({day:search.day ?? '2026-06-21' as EnergyDay,mode:'nachbarstrom' as EnergyMode}),
   loader: async ({context,deps}) => {
     const household = await context.queryClient.ensureQueryData(householdOptions());
     await context.queryClient.ensureQueryData(scenarioOptions(text(household,'id'),deps.day,deps.mode));

@@ -59,3 +59,5 @@ export function scheduleLabel(plan: ReturnType<typeof planCharging>, t: (message
   const dates = new Set(windows.flatMap(w => [dateFormatter.format(new Date(w.start)), dateFormatter.format(new Date(w.end))]));
   return windows.map(w => `${dates.size > 1 ? `${dateFormatter.format(new Date(w.start))}, ` : ''}${time(w.start)}–${time(w.end)} · ${t(sourceLabels[w.source])}`).join('; ');
 }
+export const sampleSurplusHours = [{hour:'10:00',kwh:3.2},{hour:'11:00',kwh:6.4},{hour:'12:00',kwh:9.6},{hour:'13:00',kwh:11.2},{hour:'14:00',kwh:8.8},{hour:'15:00',kwh:4.8}];
+export function splitEvenly(kwh: number, members: number) { return members > 0 ? kwh / members : 0; }

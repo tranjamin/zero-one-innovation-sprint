@@ -4,6 +4,7 @@ import {PageHeading} from './primitives';
 import {useLiveEnergy} from './live-energy-provider';
 import {useLanguage} from './language-provider';
 import {num,text,timelineWindows,viennaTime,householdSolarGeneration} from '@/lib/live-energy';
+import {sampleSurplusHours,splitEvenly} from '@/lib/energy';
 import neighbourhood from '@/assets/solar-neighbourhood.jpg';
 export function CommunityPage(){
  const {t,language,number,money}=useLanguage();
