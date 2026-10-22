@@ -56,7 +56,7 @@ function EnergyFlow() {
         {wire("M140 148 V 175 H 80 V 190", 1, "stroke-primary", evOn)}
         {wire("M180 148 V 175 H 240 V 190", 1, "stroke-primary", boilerOn)}
         {/* Junction nodes */}
-        {[[120, 120], [200, 120], [160, 92], [140, 148], [180, 148]].map(([x, y]) => (
+        {([[120, 120], [200, 120], [160, 92], [140, 148], [180, 148]] as [number, number][]).map(([x, y]) => (
           <circle key={`${x}-${y}`} cx={x} cy={y} r="2.5" className="fill-foreground" />
         ))}
         {/* Power plant: top-down roof with two cooling towers */}
@@ -65,7 +65,7 @@ function EnergyFlow() {
         <circle cx="34" cy="126" r="5" className="fill-card stroke-foreground" />
         {label(28, 150, "Power plant")}
         {/* Regional wind farm: rotors seen from above */}
-        {[[288, 108], [300, 130], [280, 134]].map(([x, y], k) => (
+        {([[288, 108], [300, 130], [280, 134]] as [number, number][]).map(([x, y], k) => (
           <g key={k} style={{ transformOrigin: `${x}px ${y}px`, transform: `rotate(${hour * 400 * (0.4 + m.regional)}deg)` }}>
             <line x1={x - 7} y1={y} x2={x + 7} y2={y} className="stroke-info" strokeWidth="2" />
             <circle cx={x} cy={y} r="1.8" className="fill-foreground" />
