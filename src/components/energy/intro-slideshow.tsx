@@ -155,7 +155,7 @@ export function IntroSlideshow() { const { t, language, setLanguage } = useLangu
       <h2 className="font-display text-2xl font-bold">{t("Charge smarter. Pay less. Share more.")}</h2>
       <p className="text-muted-foreground">{t("Wien Energie Smart Charging automatically runs your biggest appliances when power is cheapest and greenest — using your neighbours' solar surplus first.")}</p>
       <div className="grid grid-cols-3 gap-2 pt-2 text-sm">
-        {([["up to 30%", "lower charging costs"], ["0 effort", "set it once"], ["more local", "community energy"]] as [string, string][]).map(([a, b]) => (
+        {([["better timing", "lower charging costs"], ["0 effort", "set it once"], ["more local", "community energy"]] as [string, string][]).map(([a, b]) => (
           <div key={a} className="rounded-md bg-muted p-3"><div className="font-display font-bold text-primary">{t(a)}</div><div className="text-xs text-muted-foreground">{t(b)}</div></div>
         ))}
       </div>
