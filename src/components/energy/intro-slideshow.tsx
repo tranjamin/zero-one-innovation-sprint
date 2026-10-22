@@ -32,15 +32,23 @@ function EnergyFlow() {
   const evPct = Math.round(30 + 50 * prog(hour, [[0, 5], [11, 16]]));
   const boilerPct = Math.round(20 + 80 * prog(hour, [[2, 4], [12, 15]]));
   const fmt = (h: number) => `${String(Math.floor(h)).padStart(2, "0")}:${String(Math.floor((h % 1) * 60)).padStart(2, "0")}`;
-  const wire = (d: string, share: number, cls: string, on = true) => (
-    <g>
-      <path d={d} fill="none" className="stroke-border" strokeWidth="3" />
-      {on && share > 0.02 && (
-        <path d={d} fill="none" className={`${cls} animate-pulse`} strokeWidth={1.5 + share * 3}
-          style={{ animationDuration: "2.4s" }} opacity={0.45 + share * 0.5} />
-      )}
-    </g>
-  );
+  const wire = (d: string, share: number, cls: string, on = true) => {
+    const active = on && share > 0.02;
+    const w = 1.5 + share * 3;
+    return (
+      <g>
+        <path d={d} fill="none" className="stroke-border" strokeWidth="3" />
+        {/* energy fills the cable from the source end, and drains back gradually */}
+        <path d={d} fill="none" className={cls} pathLength={1} strokeWidth={w}
+          strokeDasharray="1 1" strokeDashoffset={active ? 0 : 1} opacity={0.35 + share * 0.4}
+          style={{ transition: "stroke-dashoffset 1.6s ease-in-out, stroke-width 1s ease, opacity 1s ease" }} />
+        {/* soft glow travelling in the direction of flow */}
+        <path d={d} fill="none" className={`${cls} flow-pulse`} pathLength={1} strokeWidth={w + 1.5}
+          strokeLinecap="round" strokeDasharray="0.18 0.82"
+          style={{ opacity: active ? 0.9 : 0, transition: "opacity 1.2s ease", filter: "blur(1px)" }} />
+      </g>
+    );
+  };
   const label = (x: number, y: number, t: string) => (
     <text x={x} y={y} textAnchor="middle" className="fill-muted-foreground" fontSize="8">{t}</text>
   );
@@ -48,6 +56,7 @@ function EnergyFlow() {
   return (
     <div className="space-y-3">
       <svg viewBox="0 0 320 240" className="w-full rounded-lg bg-muted" role="img" aria-label="Top-down schematic of energy charging an EV and boiler">
+        <style>{`@keyframes flowPulse{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}.flow-pulse{animation:flowPulse 2.4s linear infinite}@media (prefers-reduced-motion:reduce){.flow-pulse{animation:none}}`}</style>
         <text x="12" y="16" className="fill-foreground" fontSize="12" fontWeight="700">{fmt(hour)}</text>
         {/* Wires (orthogonal, schematic style) into the home's distribution bus at (160,120) */}
         {wire("M44 120 H 120", m.plant, "stroke-destructive")}
