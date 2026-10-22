@@ -94,7 +94,7 @@ function EnergyFlow() { const {t} = useLanguage();
             {x !== 160 && <path d={`M${x} 40 V 44 H 160`} fill="none" className="stroke-border" strokeWidth="2" />}
           </g>
         ))}
-        {label(160, 12, t("Neighbours' solar"))}
+        {label(160, 12, t("Community surplus"))}
         {/* Your home: floor plan with bus bar */}
         <rect x="120" y="92" width="80" height="56" rx="3" className="fill-card stroke-primary" strokeWidth="1.5" />
         <rect x="132" y="116" width="56" height="8" rx="1" className={anyLoad ? "fill-primary" : "fill-border"} />
@@ -135,7 +135,7 @@ function EnergyFlow() { const {t} = useLanguage();
         <input type="range" min={0} max={23} step={1} value={hour} aria-label={t("Time of day")}
           onChange={(e) => { setPlaying(false); setHour(Number(e.target.value)); }} className="flex-1 accent-primary" />
       </div>
-      <p className="text-xs text-muted-foreground">{t("Illustrative: the EV and boiler charge overnight on regional wind and at midday on neighbours' solar, and pause during the evening power-plant peak.")}</p>
+      <p className="text-xs text-muted-foreground">{t("Illustrative: the EV and boiler charge overnight on regional wind and at midday on community surplus, and pause during the evening power-plant peak.")}</p>
     </div>
   );
 }
@@ -157,7 +157,7 @@ export function IntroSlideshow() { const { t, language, setLanguage } = useLangu
     <div key="pitch" className="space-y-4 text-center">
       <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground"><Zap className="h-7 w-7" /></div>
       <h2 className="font-display text-2xl font-bold">{t("Charge smarter. Pay less. Share more.")}</h2>
-      <p className="text-muted-foreground">{t("Wien Energie Smart Charging automatically runs your biggest appliances when power is cheapest and greenest — using your neighbours' solar surplus first.")}</p>
+      <p className="text-muted-foreground">{t("Wien Energie Smart Charging automatically runs your biggest appliances when power is cheapest and greenest — using your community surplus first.")}</p>
       <div className="grid grid-cols-3 gap-2 pt-2 text-sm">
         {([["better timing", "lower charging costs"], ["0 effort", "set it once"], ["more local", "community energy"]] as [string, string][]).map(([a, b]) => (
           <div key={a} className="rounded-md bg-muted p-3"><div className="font-display font-bold text-primary">{t(a)}</div><div className="text-xs text-muted-foreground">{t(b)}</div></div>
