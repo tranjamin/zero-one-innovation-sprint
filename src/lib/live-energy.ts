@@ -8,7 +8,7 @@ export const text = (row: DataRow, key: string) => String(row[key] ?? '');
 export const viennaTime = (value: string) => !value ? '—' : /^\d{2}:\d{2}$/.test(value) ? value : new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Vienna'}).format(new Date(value));
 export const sourceNames: Record<string,string> = {own:'Your solar',community:"Neighbours' solar",market:'Grid (cheap hours)'};
 export function joinDeviceValues(plans: DataRow[], values: DataRow[]) {
- return plans.map(plan => ({...plan,...values.find(value => value.run_id === plan.run_id && value.device_id === plan.device_id)}));
+ return plans.map(plan => ({...plan,...values.find(value => value['run_id'] === plan['run_id'] && value['device_id'] === plan['device_id'])}));
 }
 export function timelineWindows(rows: DataRow[]) {
  const windows: {start:string;end:string;source:string}[] = [];

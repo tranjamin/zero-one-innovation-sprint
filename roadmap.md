@@ -11,3 +11,4 @@
 - [ ] Connect the supplied public data views read-only and add shared day/mode selectors.
 - [ ] Replace overview, charts, appliance plans, community and savings figures with queried data.
 - [ ] Preserve bilingual design, update data disclosures and verify all four scenarios and mobile layout.
+- [ ] Highlight community-surplus priority and even community-wide allocation across tabs; distinguish the intended policy from existing read-only results.
