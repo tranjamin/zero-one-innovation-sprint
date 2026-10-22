@@ -3,13 +3,13 @@ import {Sun,Users,Zap,Clock3} from 'lucide-react';
 import {PageHeading} from './primitives';
 import {useLiveEnergy} from './live-energy-provider';
 import {useLanguage} from './language-provider';
-import {num,text,timelineWindows,viennaTime} from '@/lib/live-energy';
+import {num,text,timelineWindows,viennaTime,householdSolarGeneration} from '@/lib/live-energy';
 import neighbourhood from '@/assets/solar-neighbourhood.jpg';
 export function CommunityPage(){
  const {t,language,number,money}=useLanguage();
  const {day,communityData:c,overview:o,trades,timeline}=useLiveEnergy();
  const local=timelineWindows(timeline.filter(r=>text(r,'price_source')==='community'));
- const produced=timeline.every(r=>r['solar_kw']!=null)?timeline.reduce((total,r)=>total+num(r,'solar_kw')*.25,0):null;
+ const produced=householdSolarGeneration(timeline);
  const date=new Intl.DateTimeFormat(language==='de'?'de-AT':'en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'Europe/Vienna'}).format(new Date(day+'T12:00:00Z'));
  return <><PageHeading eyebrow={text(c,'neighbourhood')} title={t('Energy community')} description={date}/>
  <section className="community-surplus" aria-labelledby="community-surplus-title"><div className="section-heading"><div><span className="eyebrow">{t('Expected community surplus')}</span><h2 id="community-surplus-title">{t('When local energy is available')}</h2></div><Sun className="text-success"/></div><div className="surplus-priority-layout"><div><h3>{t('Your planned community-energy windows')}</h3>{local.length?local.map(w=><div className="surplus-time" key={w.start}><Clock3 size={20}/><strong>{viennaTime(w.start)}–{viennaTime(w.end)}</strong></div>):<p className="section-description">{t('No community-energy windows in your selected household plan.')}</p>}<p className="section-description">{t('These windows show community energy allocated to your household, not the full community surplus forecast. Community-wide forecast times are not supplied.')}</p></div><div className="surplus-total"><span>{t('Community surplus · selected day')}</span><strong>{number(num(c,'surplus_kwh'))} <small>kWh</small></strong><span>{t('Modelled surplus before sharing')}</span></div></div></section>

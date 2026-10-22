@@ -1,4 +1,3 @@
-import {CommunityPolicy} from './community-policy';
 import {BarChart,Bar,XAxis,YAxis,Tooltip,ResponsiveContainer} from 'recharts';
 import {Wallet,Gift,TrendingUp} from 'lucide-react';
 import {PageHeading} from './primitives';
